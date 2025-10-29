@@ -70,9 +70,13 @@ services:
         environment:
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
             RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
+            RABBITMQ_ENABLE_PLUGINS: rabbitmq_auth_mechanism_ssl, rabbitmq_management
+            RABBITMQ_CONFIG_FILE: /etc/rabbitmq/rabbitmq
 
         volumes:
-            -   ./rabbitmq_data:/var/lib/rabbitmq
+            - ./rabbitmq_data:/var/lib/rabbitmq
+            - ./certs/rabbitmq:/etc/rabbitmq/certs/
+            - ./configurations/custom_configs/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf
 
         healthcheck:
             test: rabbitmq-diagnostics -q ping
@@ -88,9 +92,9 @@ services:
             - "80:80"
             - "443:443"
 
-#        volumes:
-#            - ./nginx:/etc/nginx
-#            - ./static:/var/www/static/
+        #        volumes:
+        #            - ./nginx:/etc/nginx
+        #            - ./static:/var/www/static/
 
         healthcheck:
             test: [ "CMD", "service", "nginx", "status" ]
