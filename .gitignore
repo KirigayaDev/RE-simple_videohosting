@@ -392,6 +392,8 @@ pyrightconfig.json
 
 rabbitmq_data/
 postgres_data/
+minio_data/
+redis_data/
 certs/*/*.crt
 certs/*/*.key
 certs/*/*.csr
