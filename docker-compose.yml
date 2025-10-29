@@ -25,7 +25,7 @@ services:
 
 
     postgres:
-        image: postgres:latest
+        image: postgres:latest #не знаю почему, но постгре нормально не запускается если явно указать версию
         restart: unless-stopped
         ports:
             - "5432:5432"
