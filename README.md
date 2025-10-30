@@ -35,6 +35,18 @@ openssl req -new -key ./certs/minio/private.key -out ./certs/minio/public.csr -s
 openssl x509 -req -in ./certs/minio/public.csr -CA ./certs/minio/CAs/ca.crt -CAkey ./certs/minio/CAs/ca.key -CAcreateserial -out ./certs/minio/public.crt -days 3650 -sha256
 ```
 
+Генерация сертификатов для Redis
+```bash
+openssl genrsa -out ./certs/redis/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/redis/rootCA.key -sha256 -days 3650 -out ./certs/redis/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=postgres/OU=CA/CN=redis"
+openssl genrsa -out ./certs/redis/server.key 2048
+openssl req -new -key ./certs/redis/server.key -out ./certs/redis/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=postgres/OU=IT/CN=redis"
+openssl x509 -req -in ./certs/redis/server.csr -CA ./certs/redis/rootCA.crt -CAkey ./certs/redis/rootCA.key -CAcreateserial -out ./certs/redis/server.crt -days 365 -sha256
+openssl genrsa -out ./certs/redis/client.key 2048
+openssl req -new -key ./certs/redis/client.key -out ./certs/redis/client.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=postgres/OU=IT/CN=redis"
+openssl x509 -req -in ./certs/redis/client.csr -CA ./certs/redis/rootCA.crt -CAkey ./certs/redis/rootCA.key -CAcreateserial -out ./certs/redis/client.crt -days 365
+```
+
 
 Сертификаты рассчитаны на год и через год после генерации их нужно будет перегенерировать
 

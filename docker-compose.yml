@@ -58,10 +58,14 @@ services:
             - "6379:6379"
         volumes:
             - ./redis_data:/data
+            - ./certs/redis:/certs
+            - ./configurations/custom_configs/redis:/config/
 
-        command: [ "redis-server", "--requirepass", "${REDIS_PASSWORD}", "--appendonly", "yes" ]
+        command: [ "redis-server", "/config/redis.conf", "--requirepass", "${REDIS_PASSWORD}", "--appendonly", "yes" ]
         healthcheck:
-            test: [ "CMD", "redis-cli", "-u", "redis://:${REDIS_PASSWORD}@localhost:6379", "ping" ]
+            test: [ "CMD", "redis-cli", "-u", "redis://:${REDIS_PASSWORD}@localhost:6379",
+                    "--tls", "--cert", "/certs/client.crt", "--key", "/certs/client.key", "--cacert", "/certs/rootCA.crt",
+                    "ping" ]
             interval: 30s
             timeout: 10s
             retries: 3
