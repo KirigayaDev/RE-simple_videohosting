@@ -400,3 +400,7 @@ certs/*/*.csr
 certs/*/*.srl
 certs/*/*.pem
 sessions/
+/certs/minio/CAs/*.crt
+/certs/minio/CAs/*.key
+/certs/minio/CAs/*.csr
+/certs/minio/CAs/*.srl

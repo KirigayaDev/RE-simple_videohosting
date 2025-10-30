@@ -1,5 +1,5 @@
 #!/bin/bash
-chown -R postgres:postgres /var/lib/postgresql/ssl
+chown -R postgres:postgres /var/lib/postgresql/
 chmod 600 /var/lib/postgresql/ssl/*.key
 chmod 644 /var/lib/postgresql/ssl/*.crt
 
