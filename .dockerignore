@@ -6,3 +6,4 @@ venv/
 postgres_data/
 certs/
 sessions/
+__pycache__/
