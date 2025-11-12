@@ -48,6 +48,16 @@ openssl x509 -req -in ./certs/redis/client.csr -CA ./certs/redis/rootCA.crt -CAk
 ```
 
 
+Генерация сертификатов для auth_service
+```bash
+openssl genrsa -out ./certs/auth_service/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/auth_service/rootCA.key -sha256 -days 3650 -out ./certs/auth_service/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=auth_service/OU=CA/CN=auth_service"
+openssl genrsa -out ./certs/auth_service/server.key 2048
+openssl req -new -key ./certs/auth_service/server.key -out ./certs/auth_service/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=auth_service/OU=IT/CN=auth_service"
+openssl x509 -req -in ./certs/auth_service/server.csr -CA ./certs/auth_service/rootCA.crt -CAkey ./certs/auth_service/rootCA.key -CAcreateserial -out ./certs/auth_service/server.crt -days 365 -sha256
+```
+
+
 Сертификаты рассчитаны на год и через год после генерации их нужно будет перегенерировать
 
 Если же у вас есть свои сертификаты, то положите их в папки certs/postgres/ и certs/rabbitmq/, и они должны назваться также, как и автоматически генерируемые в этом репозитории
@@ -60,11 +70,11 @@ cp ./.env.example ./.env
 В этом файле также есть коментарии которые описывают за что отвечает каждый параметр
 
 # Запуск проекта
-После предварительной настройки проекта для первого запуска(а также запуска после каких-либо изменений) нужно использовать
-```bash
-docker compose up --build
-```
-Последующие запуски можно делать с помощью
+Запуск компоуса для разработки
 ```bash
 docker compose up
+```
+Запуск компоуса на проде
+```bash
+docker compose -f docker-compose-production.yml up
 ```
