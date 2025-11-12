@@ -47,6 +47,14 @@ openssl req -new -key ./certs/redis/client.key -out ./certs/redis/client.csr -su
 openssl x509 -req -in ./certs/redis/client.csr -CA ./certs/redis/rootCA.crt -CAkey ./certs/redis/rootCA.key -CAcreateserial -out ./certs/redis/client.crt -days 365
 ```
 
+Генерация сертификатов для nginx
+```bash
+openssl genrsa -out ./certs/nginx/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/nginx/rootCA.key -sha256 -days 3650 -out ./certs/nginx/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=nginx/OU=CA/CN=nginx"
+openssl genrsa -out ./certs/nginx/server.key 2048
+openssl req -new -key ./certs/nginx/server.key -out ./certs/nginx/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=nginx/OU=IT/CN=nginx"
+openssl x509 -req -in ./certs/nginx/server.csr -CA ./certs/nginx/rootCA.crt -CAkey ./certs/nginx/rootCA.key -CAcreateserial -out ./certs/nginx/server.crt -days 365 -sha256
+```
 
 Генерация сертификатов для auth_service
 ```bash
