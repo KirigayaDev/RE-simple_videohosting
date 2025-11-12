@@ -14,10 +14,9 @@ from configurations import DatabaseSettings
 _DATABASE_SETTINGS = DatabaseSettings()
 
 config = context.config
-
 config.set_main_option('sqlalchemy.url', f"postgresql+psycopg2://{_DATABASE_SETTINGS.user}:"
                                          f"{_DATABASE_SETTINGS.password}@postgres:5432/{_DATABASE_SETTINGS.database}"
-                                         f"?sslmode=verify-full&sslrootcert=/app/certs/postgres/rootCA.crt")
+                                         f"?sslmode=verify-full&sslrootcert=/database_migrations/certs/postgres/rootCA.crt")
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
