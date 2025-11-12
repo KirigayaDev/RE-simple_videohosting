@@ -1,5 +1,5 @@
 # Что это за проект?
-Проект вдохновлённый хакатонским проектом [simple videohosting](https://github.com/Hexorcists/simple_videohosting) над которым я работал который я решил снова написать с нуля
+Переписанный с нуля проект [simple videohosting](https://github.com/Hexorcists/simple_videohosting) над которым я работал в рамках хакатона
 
 # Предварительная настройка
 ## SSL сертификаты
