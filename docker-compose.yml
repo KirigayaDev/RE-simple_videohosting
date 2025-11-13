@@ -4,11 +4,17 @@ services:
             context: /services/auth_service
             dockerfile: Dockerfile
         restart: unless-stopped
+        environment:
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+
         ports:
             -   "8000:8000"
 
         volumes:
             -  ./certs/auth_service:/auth_service/certs:ro
+            - ./crypt_keys//auth_service:/auth_service/crypt_keys:ro
 
         depends_on:
             database_migrations:

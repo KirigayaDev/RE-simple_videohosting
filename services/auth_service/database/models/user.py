@@ -13,6 +13,6 @@ class User(Base):
     username = Column(String(32), unique=True, index=True, nullable=False, name='username')
     email = Column(String(254), unique=True, index=True, nullable=False, name='email')
     password_hash = Column(String, nullable=False, name='password_hash')
-    created_at = Column(TIMESTAMP, server_default=func.now(), name='created_at')
+    created_at = Column(TIMESTAMP, server_default=func.nowtime(), name='created_at')
     token_version_uuid = Column(UUID(as_uuid=True), nullable=False, name='token_version_uuid',
                                 server_default=text('uuid_generate_v4()'))

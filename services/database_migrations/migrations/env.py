@@ -9,13 +9,11 @@ from alembic import context
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
-from configurations import DatabaseSettings
-
-_DATABASE_SETTINGS = DatabaseSettings()
+from configurations import database_settings
 
 config = context.config
-config.set_main_option('sqlalchemy.url', f"postgresql+psycopg2://{_DATABASE_SETTINGS.user}:"
-                                         f"{_DATABASE_SETTINGS.password}@postgres:5432/{_DATABASE_SETTINGS.database}"
+config.set_main_option('sqlalchemy.url', f"postgresql+psycopg2://{database_settings.user}:"
+                                         f"{database_settings.password}@postgres:5432/{database_settings.database}"
                                          f"?sslmode=verify-full&sslrootcert=/database_migrations/certs/postgres/rootCA.crt")
 
 # Interpret the config file for Python logging.

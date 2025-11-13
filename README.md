@@ -70,6 +70,13 @@ openssl x509 -req -in ./certs/auth_service/server.csr -CA ./certs/auth_service/r
 
 Если же у вас есть свои сертификаты, то положите их в папки certs/postgres/ и certs/rabbitmq/, и они должны назваться также, как и автоматически генерируемые в этом репозитории
 
+
+## Создание RSA ключей для JWT токенов
+```bash
+openssl genpkey -algorithm RSA -out ./crypt_keys/auth_service/private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in ./crypt_keys/auth_service/private_key.pem -out ./crypt_keys/auth_service/public_key.pem
+```
+
 ## Настройка .env
 Также вам нужно создать и настроить **.env** файл, у вас есть .env.example который по факту служит шаблоном вашего .env файла
 ```bash

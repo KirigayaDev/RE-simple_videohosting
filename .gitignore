@@ -404,3 +404,4 @@ sessions/
 /certs/minio/CAs/*.key
 /certs/minio/CAs/*.csr
 /certs/minio/CAs/*.srl
+/crypt_keys/*/*.pem
