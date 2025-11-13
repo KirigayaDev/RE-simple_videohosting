@@ -24,5 +24,10 @@ class _JwtSettings(BaseModel):
         return data
 
 
+class _RedisSettings(BaseModel):
+    password: str = Field(..., alias="REDIS_PASSWORD")
+
+
 jwt_settings = _JwtSettings()
 database_settings = _DatabaseSettings()
+redis_settings = _RedisSettings()
