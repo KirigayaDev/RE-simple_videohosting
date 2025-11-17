@@ -14,3 +14,7 @@ configurations/
 certs/
 crypt_keys/
 __pycache__/
+
+node_modules
+.vscode
+.svelte-kit

@@ -388,6 +388,10 @@ pyrightconfig.json
 .history
 .ionide
 
+.svelte-kit
+.vscode
+node_modules
+
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm+all,goland,go,python
 
 rabbitmq_data/
