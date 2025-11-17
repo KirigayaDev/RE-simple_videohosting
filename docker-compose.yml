@@ -145,6 +145,8 @@ services:
         depends_on:
             auth_service:
                 condition: service_healthy
+            frontend_builder:
+                condition: service_completed_successfully
 
         healthcheck:
             test: [ "CMD", "curl", "--cacert", "/etc/nginx/ssl/rootCA.crt", "-f", "https://nginx/health" ]
@@ -152,6 +154,15 @@ services:
             timeout: 10s
             retries: 3
             start_period: 10s
+
+
+    frontend_builder:
+        build:
+            context: ./services/frontend
+            dockerfile: Dockerfile
+        
+        volumes:
+          - ./frontend_build:/frontend/build
 
 
 
