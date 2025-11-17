@@ -391,6 +391,7 @@ pyrightconfig.json
 .svelte-kit/
 node_modules/
 build/
+frontend_build/
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,pycharm+all,goland,go,python
 
