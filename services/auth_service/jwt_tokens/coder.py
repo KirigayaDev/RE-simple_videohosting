@@ -2,6 +2,8 @@ import jwt
 
 from configurations import jwt_settings
 
+from database.crud.user.exists import user_and_token_version_exists
+
 from .schemas import TokenPayloadSchema
 from .blacklist import token_is_blacklisted
 
@@ -24,8 +26,9 @@ def decode_token(token: str) -> TokenPayloadSchema | None:
 
 
 async def get_token_data(token: str) -> TokenPayloadSchema | None:
-    decoded = decode_token(token)
-    if decoded is None or await token_is_blacklisted(decoded):
+    decoded: TokenPayloadSchema = decode_token(token)
+    if decoded is None or await token_is_blacklisted(decoded) or \
+            not await user_and_token_version_exists(decoded.sub, decoded.token_version):
         return None
 
     return decoded

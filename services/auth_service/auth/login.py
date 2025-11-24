@@ -1,25 +1,14 @@
 import datetime
 
 from fastapi.responses import ORJSONResponse
-from pydantic import EmailStr, ValidationError, TypeAdapter
 
 from schemas.user.login import UserLogin
 from database.crud.user.get import get_user_by_username, get_user_by_email
 from password_hasher.verify import verify_password
 from jwt_tokens.generator import generate_tokens
+from ._validators import _is_email_str
 
 from .router import router
-
-_email_adapter = TypeAdapter(EmailStr)
-
-
-def _is_email_str(value: str) -> bool:
-    try:
-        _email_adapter.validate_python(value)
-        return True
-    except ValidationError:
-        return False
-
 
 @router.post("/login")
 async def login_user(login_data: UserLogin) -> ORJSONResponse:
