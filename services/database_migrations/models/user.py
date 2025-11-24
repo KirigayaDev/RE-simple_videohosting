@@ -16,3 +16,4 @@ class User(Base):
     created_at = Column(TIMESTAMP, server_default=func.now(), name='created_at')
     token_version_uuid = Column(UUID(as_uuid=True), nullable=False, name='token_version_uuid',
                                 server_default=text('uuid_generate_v4()'))
+    display_name = Column(String(32), nullable=False, name="display_name")

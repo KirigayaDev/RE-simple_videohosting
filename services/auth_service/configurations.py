@@ -24,7 +24,7 @@ class _JwtSettings(BaseModel):
         return data
 
 
-class _RedisSettings(BaseModel):
+class _RedisSettings(BaseSettings):
     password: str = Field(..., alias="REDIS_PASSWORD")
 
 

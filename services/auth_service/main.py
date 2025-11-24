@@ -1,12 +1,14 @@
 import uvicorn
 
-import healthcheck
-
 from fastapi import FastAPI
+
+from healthcheck import router as health_router
+from auth.router import router as auth_router
 
 app = FastAPI()
 
-app.include_router(healthcheck.router)
+app.include_router(health_router)
+app.include_router(auth_router)
 
 
 def main():
