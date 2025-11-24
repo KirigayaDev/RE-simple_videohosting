@@ -1,6 +1,6 @@
-import datetime
+from datetime import datetime
 
-from pydantic import BaseModel, field_serializer
+from pydantic import BaseModel, field_serializer, ConfigDict
 from pydantic.types import UUID4
 
 from typing import Literal
@@ -19,4 +19,4 @@ class TokenPayloadSchema(BaseModel):
 
     @field_serializer("exp", "nbf", "iat")
     def serialize_datetime_as_timestamp(self, dt: datetime, _info):
-        return int(dt.timestamp())
+        return dt.timestamp()

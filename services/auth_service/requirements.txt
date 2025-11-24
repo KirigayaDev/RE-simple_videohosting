@@ -8,3 +8,4 @@ faststream[rabbit]==0.6.1
 orjson==3.11.4
 argon2-cffi==25.1.0
 pyjwt[crypto]==2.10.1
+redis==7.1.0

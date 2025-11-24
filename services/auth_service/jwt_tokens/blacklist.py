@@ -12,5 +12,5 @@ async def add_token_payload_to_blacklist(payload: TokenPayloadSchema) -> None:
         await redis_client.set(generate_blacklist_token_id(payload.jti), value=1, exat=payload.exp)
 
 
-async def token_blacklist_checker(payload: TokenPayloadSchema) -> bool:
+async def token_is_blacklisted(payload: TokenPayloadSchema) -> bool:
     return await redis_client.exists(generate_blacklist_token_id(payload.jti))
