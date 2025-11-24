@@ -17,6 +17,7 @@ services:
             -  ./certs/auth_service:/auth_service/certs:ro
             - ./crypt_keys/auth_service:/auth_service/crypt_keys:ro
             - ./certs/redis:/auth_service/redis_certs:ro
+            - ./certs/postgres:/auth_service/postgres_certs:ro
 
         depends_on:
             database_migrations:

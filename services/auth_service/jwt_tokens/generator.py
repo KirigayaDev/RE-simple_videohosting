@@ -9,7 +9,7 @@ from .schemas import TokenPayloadSchema, JwtTokens
 from .coder import encode_token
 
 
-def generate_tokens(user: User, start_datetime: datetime.datetime) -> str:
+def generate_tokens(user: User, start_datetime: datetime.datetime) -> JwtTokens:
     access_payload = TokenPayloadSchema(sub=user.uuid,
                                         nbf=start_datetime, iat=start_datetime,
                                         exp=start_datetime + datetime.timedelta(minutes=30),
