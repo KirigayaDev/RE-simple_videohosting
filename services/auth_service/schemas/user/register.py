@@ -1,4 +1,5 @@
 from pydantic import BaseModel, constr, EmailStr, model_validator
+from pydantic_core import PydanticCustomError
 
 from .constants import USERNAME_REGEX
 
@@ -15,5 +16,5 @@ class UserRegisterSchema(BaseModel):
         pw = values.password
         pw2 = values.password2
         if pw != pw2:
-            raise ValueError('Passwords do not match')
+            raise PydanticCustomError("passwords_mismatch_error", "passwords do not match")
         return values
