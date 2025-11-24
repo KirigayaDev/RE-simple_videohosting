@@ -1,6 +1,6 @@
 from fastapi.responses import ORJSONResponse
 
-from jwt_tokens.coder import get_token_data
+from jwt_tokens.get_data import get_token_data
 
 from .router import router
 

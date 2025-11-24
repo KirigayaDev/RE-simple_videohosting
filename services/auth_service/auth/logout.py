@@ -4,7 +4,7 @@ from fastapi import Cookie
 
 from fastapi.responses import ORJSONResponse
 
-from jwt_tokens.coder import get_token_data
+from jwt_tokens.get_data import get_token_data
 from jwt_tokens.blacklist import add_token_payload_to_blacklist
 
 from .router import router

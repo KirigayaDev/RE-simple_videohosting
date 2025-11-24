@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from pydantic import BaseModel, field_serializer, ConfigDict
+from pydantic import BaseModel, field_serializer
 from pydantic.types import UUID4
 
 from typing import Literal
