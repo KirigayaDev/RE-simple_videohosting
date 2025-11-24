@@ -11,4 +11,4 @@ async def authenticate_user(access_token: str) -> ORJSONResponse:
     if payload is None:
         return ORJSONResponse(status_code=401, content={"msg": "Unauthorized token"})
 
-    return ORJSONResponse(status_code=200, content={"msg": "Token info", "payload": payload})
+    return ORJSONResponse(status_code=200, content={"msg": "Token info", "payload": payload.model_dump(mode="json")})

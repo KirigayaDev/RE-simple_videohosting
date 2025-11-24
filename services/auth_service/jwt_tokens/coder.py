@@ -9,12 +9,13 @@ _ALGORITHM = "RS256"
 
 
 def encode_token(payload: TokenPayloadSchema) -> str:
-    return jwt.encode(payload, jwt_settings.private_key, algorithm=_ALGORITHM)
+    return jwt.encode(payload.model_dump(mode="json"), jwt_settings.private_key, algorithm=_ALGORITHM)
 
 
 def decode_token(token: str) -> TokenPayloadSchema | None:
     try:
-        payload_dict = jwt.decode(token, jwt_settings.public_key, algorithm=_ALGORITHM)
+        payload_dict = jwt.decode(token, jwt_settings.public_key, algorithms=[_ALGORITHM],
+                                  audience="Re:simple_videohosting_auth")
         decoded = TokenPayloadSchema(**payload_dict)
         return decoded
 
@@ -24,7 +25,7 @@ def decode_token(token: str) -> TokenPayloadSchema | None:
 
 async def get_token_data(token: str) -> TokenPayloadSchema | None:
     decoded = decode_token(token)
-    if decoded is None or token_is_blacklisted(decoded):
+    if decoded is None or await token_is_blacklisted(decoded):
         return None
 
     return decoded

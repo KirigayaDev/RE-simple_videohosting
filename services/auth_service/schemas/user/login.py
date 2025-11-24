@@ -4,5 +4,5 @@ from .constants import USERNAME_REGEX
 
 
 class UserLogin(BaseModel):
-    username: constr(pattern=USERNAME_REGEX) | EmailStr
+    login:  EmailStr | constr(pattern=USERNAME_REGEX)
     password: str

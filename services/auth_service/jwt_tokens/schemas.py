@@ -20,3 +20,8 @@ class TokenPayloadSchema(BaseModel):
     @field_serializer("exp", "nbf", "iat")
     def serialize_datetime_as_timestamp(self, dt: datetime, _info):
         return dt.timestamp()
+
+
+class JwtTokens(BaseModel):
+    access_token: str
+    refresh_token: str
