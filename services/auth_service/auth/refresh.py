@@ -14,7 +14,7 @@ from .router import router
 
 
 @router.post("/refresh")
-async def authenticate_user(refresh_token: str = Cookie(None)) -> ORJSONResponse:
+async def refresh_tokens(refresh_token: str = Cookie(None)) -> ORJSONResponse:
     old_refresh_payload = await get_token_data(refresh_token)
 
     if old_refresh_payload is None or old_refresh_payload.token_type != "refresh":

@@ -10,6 +10,7 @@ from ._validators import _is_email_str
 
 from .router import router
 
+
 @router.post("/login")
 async def login_user(login_data: UserLogin) -> ORJSONResponse:
     if _is_email_str(login_data.login):
