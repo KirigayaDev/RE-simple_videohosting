@@ -66,12 +66,22 @@ openssl x509 -req -in ./certs/auth_service/server.csr -CA ./certs/auth_service/r
 ```
 
 
+Генерация сертификатов для channel_actions
+```bash
+openssl genrsa -out ./certs/channel_actions/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/channel_actions/rootCA.key -sha256 -days 3650 -out ./certs/channel_actions/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=channel_actions/OU=CA/CN=channel_actions"
+openssl genrsa -out ./certs/channel_actions/server.key 2048
+openssl req -new -key ./certs/channel_actions/server.key -out ./certs/channel_actions/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=auth_service/OU=IT/CN=channel_actions"
+openssl x509 -req -in ./certs/channel_actions/server.csr -CA ./certs/channel_actions/rootCA.crt -CAkey ./certs/channel_actions/rootCA.key -CAcreateserial -out ./certs/channel_actions/server.crt -days 365 -sha256
+```
+
+
 Сертификаты рассчитаны на год и через год после генерации их нужно будет перегенерировать
 
-Если же у вас есть свои сертификаты, то положите их в папки certs/postgres/ и certs/rabbitmq/, и они должны назваться также, как и автоматически генерируемые в этом репозитории
+Если же у вас есть свои сертификаты, то положите их в соответствующий путь с сохранением названий
 
 
-## Создание RSA ключей для JWT токенов
+## Создание RSA ключей для подписи JWT токенов
 ```bash
 openssl genpkey -algorithm RSA -out ./crypt_keys/auth_service/private_key.pem -pkeyopt rsa_keygen_bits:2048
 openssl rsa -pubout -in ./crypt_keys/auth_service/private_key.pem -out ./crypt_keys/auth_service/public_key.pem
@@ -93,3 +103,4 @@ docker compose up
 ```bash
 docker compose -f docker-compose-production.yml up
 ```
+*в случае обновления не забудте дописать флаг --build*

@@ -9,7 +9,7 @@ _DATABASE_SETTINGS = _DatabaseSettings()
 DATABASE_URL: str = f"postgresql+asyncpg://{_DATABASE_SETTINGS.user}:{_DATABASE_SETTINGS.password}@postgres:5432/" \
                     f"{_DATABASE_SETTINGS.database}"
 
-_ssl_context = ssl.create_default_context(cafile="/auth_service/postgres_certs/rootCA.crt")
+_ssl_context = ssl.create_default_context(cafile="/channel_actions/postgres_certs/rootCA.crt")
 _ssl_context.check_hostname = True
 _ssl_context.verify_mode = ssl.CERT_REQUIRED
 
