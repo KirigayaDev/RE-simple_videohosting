@@ -1,4 +1,4 @@
-import models
+from models import *
 
 from logging.config import fileConfig
 
@@ -25,7 +25,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 
 # target_metadata = mymodel.Base.metadata
-target_metadata = models.base.Base.metadata
+target_metadata = Base.metadata
 
 
 # other values from the config, defined by the needs of env.py,

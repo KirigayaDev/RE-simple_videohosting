@@ -203,7 +203,7 @@ services:
             context: ./services/database_migrations
             dockerfile: Dockerfile
         restart: on-failure
-#        entrypoint: "alembic revision --autogenerate"
+#        entrypoint: "alembic revision --autogenerate -m \" \""
 #        command: ""
         environment:
             POSTGRES_USER: ${POSTGRES_USER}
