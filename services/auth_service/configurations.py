@@ -5,9 +5,9 @@ from pydantic_settings import BaseSettings
 
 
 class _DatabaseSettings(BaseSettings):
-    user: str = Field(..., alias="POSTGRES_USER")
-    password: str = Field(..., alias="POSTGRES_PASSWORD")
-    database: str = Field(..., alias="POSTGRES_DB")
+    user: str = Field(alias="POSTGRES_USER")
+    password: str = Field(alias="POSTGRES_PASSWORD")
+    database: str = Field(alias="POSTGRES_DB")
 
 
 class _JwtSettings(BaseModel):
@@ -25,9 +25,14 @@ class _JwtSettings(BaseModel):
 
 
 class _RedisSettings(BaseSettings):
-    password: str = Field(..., alias="REDIS_PASSWORD")
+    password: str = Field(alias="REDIS_PASSWORD")
+
+
+class _DevelopmentModeSettings(BaseSettings):
+    development_mode: bool = Field(alias="DEVELOPMENT_MODE", default=False)
 
 
 jwt_settings = _JwtSettings()
 database_settings = _DatabaseSettings()
 redis_settings = _RedisSettings()
+development_mode_settings = _DevelopmentModeSettings()
