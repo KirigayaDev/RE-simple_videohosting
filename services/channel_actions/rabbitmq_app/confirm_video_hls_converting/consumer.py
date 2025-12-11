@@ -1,4 +1,5 @@
 from faststream.rabbit import RabbitQueue
+from faststream import AckPolicy
 
 from sqlalchemy import update
 
@@ -14,7 +15,7 @@ confirm_video_hls_converting_queue = RabbitQueue("confirm_video_hls_converting",
                                                  arguments={"delivery_mode": 2})
 
 
-@router.subscriber(confirm_video_hls_converting_queue, retry=True)
+@router.subscriber(confirm_video_hls_converting_queue, ack_policy=AckPolicy.NACK_ON_ERROR)
 async def confirm_video_hls_converting(info: ConfirmVideoHlsConverting):
     async with async_session() as session:
         await session.execute(

@@ -3,6 +3,7 @@ import uuid
 import orjson
 
 from faststream.rabbit import RabbitQueue
+from faststream import AckPolicy
 
 from database.session import async_session
 from database.models.video_info import VideoInfo
@@ -21,7 +22,7 @@ convert_video_to_hls_queue = RabbitQueue("convert_video_to_hls", durable=True, a
 
 
 @router.publisher(convert_video_to_hls_queue, persist=True)
-@router.subscriber(unprocessed_video_uploaded_queue, retry=True)
+@router.subscriber(unprocessed_video_uploaded_queue, ack_policy=AckPolicy.NACK_ON_ERROR)
 async def handle_unprocessed_video_uploaded(info: UnprocessedVideoUploaded) -> bytes:
     video_uuid = uuid.uuid4()
     async with async_session() as session:
