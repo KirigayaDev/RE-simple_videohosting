@@ -38,6 +38,6 @@ async def get_current_user(request: Request, access_token: str = Cookie(None),
     if not _validate_csrf_token(request, access_token_payload, csrf_token):
         raise HTTPException(status_code=403, detail={"msg": "CSRF validation error"})
 
-    user: User = await get_user_by_uuid(access_token_payload)
+    user: User = await get_user_by_uuid(access_token_payload.sub)
 
     return user
