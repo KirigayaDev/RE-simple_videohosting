@@ -17,9 +17,9 @@ class _JwtSettings(BaseModel):
     @model_validator(mode='before')
     @classmethod
     def load_keys(cls, data: Any) -> Any:
-        with open("/auth_service/crypt_keys/private_key.pem", 'r') as f:
+        with open("/auth_service/crypt_keys/jwt_keys/private_key.pem", 'r') as f:
             data['private_key'] = f.read()
-        with open("/auth_service/crypt_keys/public_key.pem", 'r') as f:
+        with open("/auth_service/crypt_keys/jwt_keys/public_key.pem", 'r') as f:
             data['public_key'] = f.read()
         return data
 

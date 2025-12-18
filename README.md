@@ -5,6 +5,8 @@
 ## SSL сертификаты
 Если у вас нет своих SSL сертификатов, то для начала нужно установить [OpenSSL](https://www.openssl.org), это нужно для создания SSL сертификатов для безопасного соединения с PostgreSQL и RabbitMQ
 
+*P. s. мне лень было работать с certbot*
+
 Генерация сертификатов для PostgreSQL
 ```bash
 openssl genrsa -out ./certs/postgres/rootCA.key 4096
@@ -71,8 +73,17 @@ openssl x509 -req -in ./certs/auth_service/server.csr -CA ./certs/auth_service/r
 openssl genrsa -out ./certs/channel_actions/rootCA.key 4096
 openssl req -x509 -new -nodes -key ./certs/channel_actions/rootCA.key -sha256 -days 3650 -out ./certs/channel_actions/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=channel_actions/OU=CA/CN=channel_actions"
 openssl genrsa -out ./certs/channel_actions/server.key 2048
-openssl req -new -key ./certs/channel_actions/server.key -out ./certs/channel_actions/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=auth_service/OU=IT/CN=channel_actions"
+openssl req -new -key ./certs/channel_actions/server.key -out ./certs/channel_actions/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=channel_actions/OU=IT/CN=channel_actions"
 openssl x509 -req -in ./certs/channel_actions/server.csr -CA ./certs/channel_actions/rootCA.crt -CAkey ./certs/channel_actions/rootCA.key -CAcreateserial -out ./certs/channel_actions/server.crt -days 365 -sha256
+```
+
+Генерация сертификатов для file_upload
+```bash
+openssl genrsa -out ./certs/file_upload/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/file_upload/rootCA.key -sha256 -days 3650 -out ./certs/file_upload/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=file_upload/OU=CA/CN=file_upload"
+openssl genrsa -out ./certs/file_upload/server.key 2048
+openssl req -new -key ./certs/file_upload/server.key -out ./certs/file_upload/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=file_upload/OU=IT/CN=file_upload"
+openssl x509 -req -in ./certs/file_upload/server.csr -CA ./certs/file_upload/rootCA.crt -CAkey ./certs/file_upload/rootCA.key -CAcreateserial -out ./certs/file_upload/server.crt -days 365 -sha256
 ```
 
 
@@ -83,8 +94,8 @@ openssl x509 -req -in ./certs/channel_actions/server.csr -CA ./certs/channel_act
 
 ## Создание RSA ключей для подписи JWT токенов
 ```bash
-openssl genpkey -algorithm RSA -out ./crypt_keys/auth_service/private_key.pem -pkeyopt rsa_keygen_bits:2048
-openssl rsa -pubout -in ./crypt_keys/auth_service/private_key.pem -out ./crypt_keys/auth_service/public_key.pem
+openssl genpkey -algorithm RSA -out ./crypt_keys/jwt_keys/private_key.pem -pkeyopt rsa_keygen_bits:2048
+openssl rsa -pubout -in ./crypt_keys/jwt_keys/private_key.pem -out ./crypt_keys/jwt_keys/public_key.pem
 ```
 
 ## Настройка .env

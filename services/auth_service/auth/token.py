@@ -22,5 +22,6 @@ async def authenticate_user(access_token: str) -> ORJSONResponse:
         "username": user.username,
         "email": user.email,
         "created_at": user.created_at,
+        "token_version_uuid": user.token_version_uuid,
         "display_name": user.display_name
     }})
