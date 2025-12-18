@@ -30,7 +30,7 @@ async def get_current_user(request: Request, access_token: str = Cookie(None),
 
     access_token_payload: TokenPayloadSchema = await get_token_data(access_token)
     if access_token_payload is None:
-        raise HTTPException(status_code=401, detail={"msg": "expired token"})
+        raise HTTPException(status_code=401, detail={"msg": "expired access token"})
 
     if access_token_payload.token_type != "access":
         raise HTTPException(status_code=401, detail={"msg": "Wrong access token"})

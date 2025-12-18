@@ -28,7 +28,10 @@ async def change_user_password(change_password: UserChangePasswordSchema,
     user.token_version_uuid = uuid.uuid4()
 
     if await try_update_user(user):
-        return ORJSONResponse(status_code=200, content={"msg": "successfully changed"})
+        response = ORJSONResponse(status_code=200, content={"msg": "successfully changed"})
+        response.delete_cookie("access_token")
+        response.delete_cookie("refresh_token")
+        return response
 
     else:
         return ORJSONResponse(status_code=500, content={"msg": "Error on update user"})
