@@ -20,17 +20,18 @@ async def refresh_tokens(csrf_token: str = Header(None, alias="X-CSRF-Token", al
                          refresh_token: str = Cookie(None)) -> ORJSONResponse:
     old_refresh_payload = await get_token_data(refresh_token)
 
+    neg_response = None
+
     if old_refresh_payload is None or old_refresh_payload.token_type != "refresh":
         neg_response = ORJSONResponse(status_code=401, content={"msg": "Unauthorized"})
-        neg_response.delete_cookie("access_token")
-        neg_response.delete_cookie("refresh_token")
-        return neg_response
 
     csrf_token_payload = decode_token(csrf_token)
     if csrf_token_payload is None or old_refresh_payload.sub != csrf_token_payload.sub or \
             old_refresh_payload.token_version != csrf_token_payload.token_version or \
             csrf_token_payload.token_type != "csrf":
         neg_response = ORJSONResponse(status_code=403, content={"msg": "CSRF validation error"})
+
+    if neg_response is not None:
         neg_response.delete_cookie("access_token")
         neg_response.delete_cookie("refresh_token")
         return neg_response
