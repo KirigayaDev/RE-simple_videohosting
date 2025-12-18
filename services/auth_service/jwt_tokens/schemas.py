@@ -6,7 +6,7 @@ from pydantic.types import UUID4
 from typing import Literal
 
 
-class TokenPayloadSchema(BaseModel):
+class AccountTokenPayloadSchema(BaseModel):
     iss: str = 'Re:simple_videohosting_auth'
     sub: UUID4
     aud: str = 'Re:simple_videohosting_auth'
