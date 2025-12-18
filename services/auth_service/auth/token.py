@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from fastapi.responses import ORJSONResponse
 
 from jwt_tokens.get_data import get_token_data
@@ -9,6 +10,6 @@ from .router import router
 async def authenticate_user(access_token: str) -> ORJSONResponse:
     payload = await get_token_data(access_token)
     if payload is None or payload.token_type != "access":
-        return ORJSONResponse(status_code=401, content={"msg": "Unauthorized token"})
+        raise HTTPException(status_code=401, detail={"msg": "Unauthorized token"})
 
     return ORJSONResponse(status_code=200, content={"msg": "Token info", "payload": payload.model_dump(mode="json")})

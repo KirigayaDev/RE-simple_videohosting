@@ -6,7 +6,7 @@ from pydantic.types import UUID4
 from typing import Literal
 
 
-class AccountTokenPayloadSchema(BaseModel):
+class TokenPayloadSchema(BaseModel):
     iss: str = 'Re:simple_videohosting_auth'
     sub: UUID4
     aud: str = 'Re:simple_videohosting_auth'
@@ -15,13 +15,13 @@ class AccountTokenPayloadSchema(BaseModel):
     iat: datetime
     jti: UUID4
     token_version: UUID4
-    token_type: Literal["access", "refresh"]
+    token_type: Literal["access", "refresh", "csrf"]
 
     @field_serializer("exp", "nbf", "iat")
     def serialize_datetime_as_timestamp(self, dt: datetime, _info):
         return dt.timestamp()
 
 
-class JwtTokens(BaseModel):
+class UserJwtTokens(BaseModel):
     access_token: str
     refresh_token: str
