@@ -3,6 +3,9 @@ from fastapi.responses import ORJSONResponse
 
 from jwt_tokens.get_data import get_token_data
 
+from database.models.user import User
+from database.crud.user.get import get_user_by_uuid
+
 from .router import router
 
 
@@ -12,4 +15,12 @@ async def authenticate_user(access_token: str) -> ORJSONResponse:
     if payload is None or payload.token_type != "access":
         raise HTTPException(status_code=401, detail={"msg": "Unauthorized token"})
 
-    return ORJSONResponse(status_code=200, content={"msg": "Token info", "payload": payload.model_dump(mode="json")})
+    user: User = await get_user_by_uuid(payload.sub)
+
+    return ORJSONResponse(status_code=200, content={"msg": "Token info", "user_info": {
+        "uuid": str(user.uuid),
+        "username": user.username,
+        "email": user.email,
+        "created_at": user.created_at,
+        "display_name": user.display_name
+    }})
