@@ -22,9 +22,9 @@ def main():
                 host='0.0.0.0',
                 port=8030,
                 reload=False,
-                ssl_keyfile="/file_upload/certs/server.key",
-                ssl_certfile="/file_upload/certs/server.crt",
-                ssl_ca_certs="/file_upload/certs/rootCA.crt")
+                ssl_keyfile="/file_upload/certs/file_upload/server.key",
+                ssl_certfile="/file_upload/certs/file_upload/server.crt",
+                ssl_ca_certs="/file_upload/certs/file_upload/rootCA.crt")
 
 
 if __name__ == '__main__':
