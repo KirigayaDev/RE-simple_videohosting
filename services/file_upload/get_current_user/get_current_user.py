@@ -15,6 +15,9 @@ async def get_current_user(request: Request, access_token: str = Cookie(None),
 
     user: UserSchema = await get_user_data_by_token(access_token)
 
+    if user is None:
+        raise HTTPException(status_code=401, detail={"msg": "Unauthorized"})
+
     if not await _validate_csrf_token(request, user, csrf_token):
         raise HTTPException(status_code=403, detail={"msg": "CSRF validation error"})
 

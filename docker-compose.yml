@@ -91,6 +91,8 @@ services:
             REDIS_PASSWORD: ${REDIS_PASSWORD}
             RABBITMQ_USER: ${RABBITMQ_DEFAULT_USER}
             RABBITMQ_PASS: ${RABBITMQ_DEFAULT_PASS}
+            MINIO_USER: ${MINIO_ROOT_USER}
+            MINIO_PASSWORD: ${MINIO_ROOT_PASSWORD}
 
         ports:
             - "8030:8030"
@@ -99,6 +101,7 @@ services:
             - ./certs/file_upload:/file_upload/certs/file_upload:ro
             - ./certs/rabbitmq:/file_upload/certs/rabbitmq:ro
             - ./certs/minio:/file_upload/certs/minio:ro
+            - ./certs/auth_service:/auth_service/certs/auth_service:ro
             - ./crypt_keys/jwt_keys:/file_upload/crypt_keys/jwt_keys:ro
 
         depends_on:
@@ -155,7 +158,8 @@ services:
         command: [ "server", "--console-address", ":9001", "/data" ]
 
         healthcheck:
-            test: [ "CMD", "curl", "--cacert", "/root/.minio/certs/CAs/ca.crt", "-f", "https://minio:9000/minio/health/live" ]
+            test: [ "CMD", "curl", "--cacert", "/root/.minio/certs/CAs/ca.crt",
+                    "-f", "-k", "https://minio:9000/minio/health/live" ]
             interval: 30s
             timeout: 20s
             retries: 3
@@ -214,7 +218,7 @@ services:
         restart: unless-stopped
         ports:
             - "5672:5672"
-            - "15672:15672"
+            - "15671:15671"
         environment:
             RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
             RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}

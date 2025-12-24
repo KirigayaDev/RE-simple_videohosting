@@ -10,8 +10,7 @@ class VideoInfo(Base):
 
     uuid = Column(UUID(as_uuid=True), primary_key=True, index=True, name='uuid',
                   server_default=text('uuid_generate_v4()'))
-    author_uuid = Column(UUID(as_uuid=True), ForeignKey('users.uuid', ondelete="CASCADE"), nullable=False, index=True,
-                         name='author_id')
+    author_uuid = Column(UUID(as_uuid=True), nullable=False, index=True, name='author_id')
     created_at = Column(TIMESTAMP, nullable=False, server_default=func.now(), name='created_at')
     is_complete = Column(Boolean, nullable=False, server_default='false', name='is_complete')
     likes_count = Column(BIGINT, nullable=False, server_default='0', name='likes_count')

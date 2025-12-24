@@ -1,3 +1,5 @@
+import minio_client
+
 from fastapi import APIRouter
 from fastapi.responses import ORJSONResponse
 

@@ -14,6 +14,9 @@ def _validate_csrf_token(request: Request, access_token_payload: TokenPayloadSch
     if request.method in ["GET", "HEAD", "OPTIONS"]:
         return True
 
+    if csrf_token is None:
+        return False
+
     csrf_token_payload = decode_token(csrf_token)
     if csrf_token_payload is None or csrf_token_payload.sub != access_token_payload.sub or \
             csrf_token_payload.token_version != access_token_payload.token_version or \
