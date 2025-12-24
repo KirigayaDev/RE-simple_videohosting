@@ -29,7 +29,7 @@ def generate_auth_tokens(user: User, start_datetime: datetime.datetime) -> UserJ
 def generate_csrf_token(user: User, start_datetime: datetime.datetime) -> str:
     csrf_payload = TokenPayloadSchema(sub=user.uuid,
                                       nbf=start_datetime, iat=start_datetime,
-                                      exp=start_datetime + datetime.timedelta(minutes=30),
+                                      exp=start_datetime + datetime.timedelta(minutes=5),
                                       jti=uuid4(), token_version=user.token_version_uuid, token_type="csrf")
 
     return encode_token(csrf_payload)

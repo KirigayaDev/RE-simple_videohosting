@@ -13,6 +13,7 @@ from schemas.user import UserSchema
 from get_current_user.get_current_user import get_current_user
 
 from minio_client.minio_client import minio_client
+from minio_client.bucket_info import bucket_name
 
 from rabbitmq_app.unprocessed_video_uploader import send_video_uploaded_message
 
@@ -52,27 +53,26 @@ async def _object_exists(bucket, obj_name):
 
 async def _try_upload_video(file: UploadFile, user: UserSchema) -> bool:
     file_ext = Path(file.filename).suffix.lower()
-    new_filename = f"{uuid.uuid4()}{file_ext}"
-    while await _object_exists("unprocessed-videos", new_filename):
+    new_filename = f"unprocessed-videos/{uuid.uuid4()}{file_ext}"
+    while await _object_exists(bucket_name, new_filename):
         new_filename = f"{uuid.uuid4()}.{file_ext}"
 
     try:
         dup_fd = os.dup(file.file.fileno())
         result = await asyncio.to_thread(minio_client.fput_object,
-                                         "unprocessed-videos",
+                                         bucket_name,
                                          new_filename,
                                          dup_fd  # оптимизация Zero-copy которая была в старом проекте
                                          )
-        video_path = f"unprocessed-videos/{new_filename}"
         # Отправка сообщения в брокер о том, что видео было выгружено
-        await send_video_uploaded_message(UnprocessedVideoUploaded(user_uuid=user.uuid, video_path=video_path))
+        await send_video_uploaded_message(UnprocessedVideoUploaded(user_uuid=user.uuid, video_path=new_filename))
     except S3Error as e:
         return False, e
 
     except Exception as e:
         try:
-            if await _object_exists("unprocessed-videos", new_filename):
-                await asyncio.to_thread(minio_client.remove_object, "unprocessed-videos", new_filename)
+            if await _object_exists(bucket_name, new_filename):
+                await asyncio.to_thread(minio_client.remove_object, bucket_name, new_filename)
         except Exception:
             pass
         return False, e

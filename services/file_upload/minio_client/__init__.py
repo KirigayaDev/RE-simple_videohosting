@@ -1,2 +1,2 @@
 from . import minio_client
-from . import _bucket_init
+from . import bucket_info

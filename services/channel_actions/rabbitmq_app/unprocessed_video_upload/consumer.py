@@ -14,10 +14,14 @@ from ..router import router
 @router.subscriber(unprocessed_video_uploaded_queue, ack_policy=AckPolicy.NACK_ON_ERROR)
 @router.publisher(convert_video_to_hls_queue, persist=True)
 async def handle_unprocessed_video_uploaded(info: UnprocessedVideoUploaded) -> bytes:
-    video_uuid = uuid.uuid4()
     async with async_session() as session:
-        video_info_db = VideoInfo(uuid=video_uuid, author_uuid=info.user_uuid)
-        session.add(video_info_db)
-        await session.commit()
+        try:
+            video_info_db = VideoInfo(author_uuid=info.user_uuid)
+            session.add(video_info_db)
+            await session.commit()
+            video_uuid = video_info_db.uuid
+        except Exception:
+            await session.rollback()
+            raise
 
     return ConvertVideoToHls(video_uuid=video_uuid, video_path=info.video_path)
