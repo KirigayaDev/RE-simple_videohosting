@@ -5,7 +5,7 @@ from sqlalchemy import update
 from database.session import async_session
 from database.models.video_info import VideoInfo
 
-from ._schema import ConfirmVideoHlsConverting
+from ._schemas import ConfirmVideoHlsConverting
 from ..queues import confirm_video_hls_converting_queue
 
 from ..router import router
