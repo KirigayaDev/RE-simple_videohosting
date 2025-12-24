@@ -87,6 +87,16 @@ openssl x509 -req -in ./certs/file_upload/server.csr -CA ./certs/file_upload/roo
 ```
 
 
+Генерация сертификатов для video_postprocess
+```bash
+openssl genrsa -out ./certs/video_postprocess/rootCA.key 4096
+openssl req -x509 -new -nodes -key ./certs/video_postprocess/rootCA.key -sha256 -days 3650 -out ./certs/video_postprocess/rootCA.crt -subj "/C=RU/ST=Moscow/L=Moscow/O=video_postprocess/OU=CA/CN=video_postprocess"
+openssl genrsa -out ./certs/video_postprocess/server.key 2048
+openssl req -new -key ./certs/video_postprocess/server.key -out ./certs/video_postprocess/server.csr -subj "/C=RU/ST=Moscow/L=Moscow/O=video_postprocess/OU=IT/CN=video_postprocess"
+openssl x509 -req -in ./certs/video_postprocess/server.csr -CA ./certs/video_postprocess/rootCA.crt -CAkey ./certs/video_postprocess/rootCA.key -CAcreateserial -out ./certs/video_postprocess/server.crt -days 365 -sha256
+```
+
+
 Сертификаты рассчитаны на год и через год после генерации их нужно будет перегенерировать
 
 Если же у вас есть свои сертификаты, то положите их в соответствующий путь с сохранением названий
