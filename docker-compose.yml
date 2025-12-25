@@ -282,7 +282,7 @@ services:
             - ./certs/auth_service:/etc/ssl/auth_service:ro
             - ./certs/file_upload:/etc/ssl/file_upload:ro
         #            - ./nginx:/etc/nginx
-        #            - ./static:/var/www/static/
+            - ./static:/var/www/static/
 
         depends_on:
             auth_service:
