@@ -1,7 +1,18 @@
 FROM python:3.12.12-alpine3.23
 
 #для healthcheck
-RUN apk add --no-cache curl
+RUN apk add --no-cache curl clamav clamav-daemon clamav-libunrar dcron ffmpeg
+
+RUN echo "PrivateMirror https://packages.microsoft.com/clamav/" >> /etc/clamav/freshclam.conf
+
+RUN mkdir -p /var/lib/clamav /var/log/clamav /var/run/clamav && \
+    chown -R clamav:clamav /var/lib/clamav /var/log/clamav /var/run/clamav && \
+    \
+    freshclam --quiet && \
+    \
+    echo "0 */12 * * * clamav freshclam --quiet" > /etc/crontabs/clamav && \
+    chmod 0644 /etc/crontabs/clamav && \
+    crontab /etc/crontabs/clamav
 
 
 WORKDIR /video_postprocess
